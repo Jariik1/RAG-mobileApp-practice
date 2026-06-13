@@ -3530,12 +3530,13 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
 
 /* dictionary-style line under the hero subtitle */
 .nb-dict{
+    grid-column:2;          /* sit under the subtitle, clear of the side meta */
     font-family:'JetBrains Mono', ui-monospace, Menlo, monospace;
     font-size:.8rem;
     line-height:1.5;
     color:rgba(26,10,0,.72);
-    max-width:400px;
-    margin-top:16px;
+    max-width:360px;
+    margin-top:18px;
     letter-spacing:-.2px;
     opacity:0;
     animation:nbFadeUp 1s .55s ease forwards;
@@ -3669,10 +3670,6 @@ body.kvyyk-body{
     border-radius:inherit;
     z-index:0;
 }
-.nb-page-hero-inner,
-.nb-page-hero .nb-page-meta,
-.nb-page-hero .nb-page-back,
-.nb-page-hero .nb-page-bgmark{position:relative;z-index:1;}
 
 /* =========================
    A11Y — KEYBOARD FOCUS
