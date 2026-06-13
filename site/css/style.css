@@ -64,7 +64,6 @@ html{scroll-behavior:smooth;}
         radial-gradient(circle at 75% 65%,
             rgba(255,200,140,.16), transparent 55%);
     filter:blur(60px);
-    animation:liquidFlow 18s ease-in-out infinite;
     pointer-events:none;
     z-index:0;
     border-radius:inherit;
@@ -153,8 +152,8 @@ body{
         linear-gradient(180deg,
             rgba(20,20,20,.42),
             rgba(20,20,20,.28));
-    backdrop-filter:blur(36px) saturate(155%) brightness(1.08);
-    -webkit-backdrop-filter:blur(36px) saturate(155%) brightness(1.08);
+    backdrop-filter:blur(22px) saturate(155%) brightness(1.08);
+    -webkit-backdrop-filter:blur(22px) saturate(155%) brightness(1.08);
     border:1px solid rgba(255,255,255,.14);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.22),
@@ -176,23 +175,6 @@ body{
     pointer-events:none;
     border-radius:inherit;
     z-index:1;
-}
-/* drifting liquid lens highlight */
-.nb-nav-inner::after{
-    content:"";
-    position:absolute;
-    top:-60%;left:-25%;
-    width:55%;height:220%;
-    background:radial-gradient(circle,
-        rgba(255,255,255,.12), transparent 60%);
-    filter:blur(16px);
-    pointer-events:none;
-    z-index:1;
-    animation:nbNavLens 13s ease-in-out infinite;
-}
-@keyframes nbNavLens{
-    0%,100%{transform:translateX(0);opacity:.6;}
-    50%{transform:translateX(280%);opacity:1;}
 }
 .nb-nav-inner > *{position:relative;z-index:2;}
 .nb-nav-inner.scrolled{
@@ -2521,7 +2503,6 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
     filter:blur(40px);
     pointer-events:none;
     z-index:0;
-    animation:nbSecGlow 16s ease-in-out infinite;
 }
 .nb-sec > *{position:relative;z-index:1;}
 @keyframes nbSecGlow{
@@ -2638,7 +2619,6 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
         radial-gradient(circle at 78% 72%,
             rgba(255,200,140,.18),transparent 55%);
     filter:blur(60px);
-    animation:liquidFlow 20s ease-in-out infinite;
     pointer-events:none;
     z-index:0;
 }
@@ -3505,8 +3485,6 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
 .liquid-light{
     backdrop-filter:blur(16px) saturate(180%) brightness(1.08);
     -webkit-backdrop-filter:blur(16px) saturate(180%) brightness(1.08);
-    backdrop-filter:url(#lg-distortion) blur(7px) saturate(180%) brightness(1.08);
-    -webkit-backdrop-filter:url(#lg-distortion) blur(7px) saturate(180%) brightness(1.08);
 }
 
 /* =========================
@@ -3646,10 +3624,8 @@ body.kvyyk-body{
     margin:44px 28px;
     border-radius:34px;
     background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
-    backdrop-filter:blur(26px) saturate(165%) brightness(1.05);
-    -webkit-backdrop-filter:blur(26px) saturate(165%) brightness(1.05);
-    backdrop-filter:url(#lg-distortion) blur(13px) saturate(165%) brightness(1.05);
-    -webkit-backdrop-filter:url(#lg-distortion) blur(13px) saturate(165%) brightness(1.05);
+    backdrop-filter:blur(20px) saturate(165%) brightness(1.05);
+    -webkit-backdrop-filter:blur(20px) saturate(165%) brightness(1.05);
     border:1px solid rgba(255,255,255,.18);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.28),
