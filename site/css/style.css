@@ -3667,16 +3667,27 @@ body.kvyyk-body{
     border-radius:inherit;z-index:0;pointer-events:none;
 }
 .nb-dash{
-    position:absolute;left:0;height:2px;border-radius:2px;
-    background:#ff5a1e;box-shadow:0 0 8px rgba(255,90,20,.55);
-    transform:translateX(-25vw);opacity:0;
+    position:absolute;left:0;height:7px;
+    /* retro snake-body: row of orange blocks */
+    background:repeating-linear-gradient(90deg,
+        #ff5a1e 0 12px, rgba(255,90,20,0) 12px 17px);
+    box-shadow:0 0 10px rgba(255,90,20,.45);
+    image-rendering:pixelated;
+    transform:translateX(-30vw);opacity:0;
     animation:nbDash linear infinite;
 }
+.nb-dash.rev{animation-name:nbDashRev;}
 @keyframes nbDash{
-    0%{transform:translateX(-25vw);opacity:0;}
-    8%{opacity:.85;}
-    90%{opacity:.85;}
-    100%{transform:translateX(115vw);opacity:0;}
+    0%{transform:translateX(-30vw);opacity:0;}
+    8%{opacity:.95;}
+    90%{opacity:.95;}
+    100%{transform:translateX(120vw);opacity:0;}
+}
+@keyframes nbDashRev{
+    0%{transform:translateX(120vw);opacity:0;}
+    8%{opacity:.95;}
+    90%{opacity:.95;}
+    100%{transform:translateX(-30vw);opacity:0;}
 }
 .nb-dark-title{text-shadow:0 2px 26px rgba(10,5,2,.55);}
 
