@@ -3634,6 +3634,11 @@ body.kvyyk-body{
     margin:14px 14px 0;
     border-radius:40px;
 }
+/* subpages: same rounded-card hero */
+.nb-page-hero{
+    margin:14px;
+    border-radius:40px;
+}
 
 /* block 2 «Знакомьтесь» = featured liquid-glass card floating on the sunrise */
 .home .nb-dark{
@@ -3660,7 +3665,8 @@ body.kvyyk-body{
 
 /* subpage bright hero blends smoothly into the sunrise at its bottom */
 .nb-page-hero::after{
-    background:linear-gradient(180deg, transparent 52%, #1c0f08 100%);
+    background:radial-gradient(ellipse at 50% 120%, rgba(10,7,3,.4), transparent 60%);
+    border-radius:inherit;
     z-index:0;
 }
 .nb-page-hero-inner,
