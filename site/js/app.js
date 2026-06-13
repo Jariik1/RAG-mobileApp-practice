@@ -513,3 +513,78 @@ if(themeToggle){
         });
 
 }
+/* =========================
+   TEAM — horizontal pinned collapsing cards
+========================= */
+(function(){
+  const pin = document.querySelector('.nb-cap');
+  if(!pin) return;
+  const sticky = pin.querySelector('.nb-cap-sticky');
+  const cards = Array.prototype.slice.call(pin.querySelectorAll('.nb-cap-card'));
+  const N = cards.length;
+  if(!N) return;
+  const STRIP = 90;             // collapsed strip width, px
+  let mobile = false;
+
+  function layout(){
+    if(window.innerWidth <= 760){
+      if(!mobile){
+        cards.forEach(function(c){
+          c.style.removeProperty('--w');
+          c.style.removeProperty('--x');
+          c.style.removeProperty('--c');
+          c.style.zIndex = '';
+        });
+        mobile = true;
+      }
+      return;
+    }
+    mobile = false;
+
+    const vw = sticky.clientWidth;
+    const total = pin.offsetHeight - window.innerHeight;
+    const top = pin.getBoundingClientRect().top;
+    const s = Math.min(Math.max(-top, 0), total);
+    const p = total > 0 ? (s / total) * (N - 1) : 0;
+    const a = Math.floor(p);
+    const f = p - a;
+
+    for(let i = 0; i < N; i++){
+      let x, w, c;
+      if(i < a){
+        x = i * STRIP; w = STRIP; c = 1;
+      } else if(i === a){
+        const full = vw - a * STRIP;
+        w = STRIP + (1 - f) * (full - STRIP);
+        x = a * STRIP; c = f;
+      } else {
+        const full = vw - a * STRIP;
+        const wA = STRIP + (1 - f) * (full - STRIP);
+        if(i === a + 1){
+          x = a * STRIP + wA;
+          w = vw - x; if(w < 0) w = 0;
+          c = 0;
+        } else {
+          x = vw; w = full > 0 ? full : vw; c = 0;
+        }
+      }
+      const card = cards[i];
+      card.style.setProperty('--x', x + 'px');
+      card.style.setProperty('--w', w + 'px');
+      card.style.setProperty('--c', c.toFixed(3));
+      card.style.zIndex = String(N - i);
+    }
+  }
+
+  let ticking = false;
+  function onScroll(){
+    if(!ticking){
+      requestAnimationFrame(function(){ layout(); ticking = false; });
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', layout);
+  window.addEventListener('load', layout);
+  layout();
+})();
