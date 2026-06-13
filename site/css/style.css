@@ -109,7 +109,10 @@ html{scroll-behavior:smooth;}
 body{
     font-family:'Inter',sans-serif;
     background:#0b0b0b;
-    color:#0d0d0d;
+    /* page is dark by default -> light default text.
+       light elements (.nb-mob-btn, .nb-phone-dark, pills)
+       set their own dark color explicitly. */
+    color:rgba(255,255,255,.9);
     line-height:1.5;
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
@@ -172,7 +175,7 @@ body{
 }
 .nb-nav-inner > *{position:relative;z-index:2;}
 .nb-nav-inner.scrolled{
-    max-width:980px;
+    max-width:1080px;
     background:
         linear-gradient(180deg,
             rgba(20,20,20,.55),
@@ -190,28 +193,54 @@ body{
 .nb-links{
     list-style:none;
     display:flex;
-    gap:24px;
+    gap:6px;
 }
 .nb-links a{
+    display:inline-block;
     color:rgba(255,255,255,.78);
     text-decoration:none;
     font-size:.88rem;
+    white-space:nowrap;
     transition:color .25s ease;
     position:relative;
+    padding:7px 14px;
+    border-radius:20px;
+    isolation:isolate;
 }
-.nb-links a::after{
+/* liquid glass pill */
+.nb-links a::before{
     content:"";
     position:absolute;
-    left:50%;bottom:-6px;
-    width:0;height:2px;
-    background:linear-gradient(90deg,#ff5400,#ffb347);
-    border-radius:2px;
-    transition:width .3s ease, left .3s ease;
+    inset:0;
+    border-radius:20px;
+    background:linear-gradient(135deg,
+        rgba(255,255,255,.13) 0%,
+        rgba(255,255,255,.05) 100%);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.26),
+        inset 0 -1px 0 rgba(0,0,0,.06),
+        0 6px 20px rgba(0,0,0,.14);
+    opacity:0;
+    transform:scale(.82);
+    transition:opacity .26s ease, transform .38s cubic-bezier(.34,1.56,.64,1);
+    z-index:-1;
+    pointer-events:none;
 }
-.nb-links a:hover::after,
-.nb-links a.active-link::after{
-    width:100%;
-    left:0;
+.nb-links a:hover::before{
+    opacity:1;
+    transform:scale(1);
+}
+.nb-links a.active-link::before{
+    opacity:1;
+    transform:scale(1);
+    background:linear-gradient(135deg,
+        rgba(255,110,30,.16) 0%,
+        rgba(255,80,0,.08) 100%);
+    border-color:rgba(255,120,40,.28);
+    box-shadow:
+        inset 0 1px 0 rgba(255,200,100,.20),
+        0 6px 20px rgba(255,80,0,.10);
 }
 .nb-links a:hover,.active-link{color:#fff !important;}
 .nb-mob-btn{
@@ -229,6 +258,8 @@ body{
     border-radius:999px;
     font-weight:700;
     font-size:.82rem;
+    white-space:nowrap;
+    flex-shrink:0;
 }
 
 /* =========================
@@ -1336,10 +1367,7 @@ body{
 .nb-section{
     position:relative;
     background:
-        radial-gradient(900px 600px at 85% 0%,
-            rgba(255,122,26,.18), transparent 60%),
-        radial-gradient(700px 500px at 15% 100%,
-            rgba(255,170,80,.12), transparent 60%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 1200' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3CradialGradient id='a' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23ff7a1a' stop-opacity='.32'/%3E%3Cstop offset='100%25' stop-color='%23ff7a1a' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='b' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23ffaa50' stop-opacity='.22'/%3E%3Cstop offset='100%25' stop-color='%23ffaa50' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cpattern id='d' width='26' height='26' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='2' cy='2' r='1.6' fill='%23ffffff' opacity='.06'/%3E%3C/pattern%3E%3C/defs%3E%3Cellipse cx='1380' cy='120' rx='560' ry='430' fill='url(%23a)'/%3E%3Cellipse cx='180' cy='1080' rx='520' ry='400' fill='url(%23b)'/%3E%3Ccircle cx='1450' cy='330' r='190' fill='none' stroke='%23ff8a2a' stroke-opacity='.28' stroke-width='1.5'/%3E%3Ccircle cx='1450' cy='330' r='240' fill='none' stroke='%23ff8a2a' stroke-opacity='.12' stroke-width='1'/%3E%3Ccircle cx='110' cy='240' r='120' fill='none' stroke='%23ffb866' stroke-opacity='.25' stroke-width='1.5' stroke-dasharray='3 12' stroke-linecap='round'/%3E%3Crect x='980' y='760' width='560' height='380' fill='url(%23d)'/%3E%3Crect x='60' y='60' width='240' height='200' fill='url(%23d)'/%3E%3Cg stroke='%23ffb866' stroke-opacity='.35' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M210,560h16M218,552v16'/%3E%3Cpath d='M1320,940h16M1328,932v16'/%3E%3Cpath d='M760,120h16M768,112v16'/%3E%3C/g%3E%3Ccircle cx='640' cy='980' r='4' fill='%23ff8a2a' opacity='.5'/%3E%3Ccircle cx='1180' cy='240' r='3' fill='%23ffd9a0' opacity='.6'/%3E%3C/svg%3E") center/cover no-repeat,
         linear-gradient(180deg, #0a0707 0%, #0a0a0a 100%);
     color:#fff;
     padding:80px 60px;
@@ -1348,6 +1376,8 @@ body{
 .nb-container{
     max-width:1320px;
     margin:0 auto;
+    position:relative;
+    z-index:1;
 }
 .nb-num-row{
     display:flex;
@@ -1356,12 +1386,25 @@ body{
     margin-bottom:50px;
     padding-bottom:30px;
     border-bottom:1px solid rgba(255,255,255,.08);
+    position:relative;
+}
+.nb-num-row::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:-2px;
+    width:120px;height:3px;
+    border-radius:3px;
+    background:linear-gradient(90deg,#ff4d00,#ffb347);
 }
 .nb-num-tag{
     font-family:'Manrope',sans-serif;
-    color:rgba(255,255,255,.4);
+    color:#ff9a3a;
     font-weight:700;
-    font-size:.9rem;
+    font-size:.8rem;
+    padding:5px 12px;
+    border:1px solid rgba(255,138,42,.35);
+    border-radius:999px;
+    background:rgba(255,122,26,.08);
 }
 .nb-num-row h3{
     font-family:'Manrope',sans-serif;
@@ -3221,4 +3264,45 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
     .nb-feat-col-left .nb-feat-pill{flex-direction:row;}
     .nb-feat-pill{max-width:100%;}
     .nb-showcase-head{margin-bottom:40px;}
+}
+
+/* =========================
+   A11Y — KEYBOARD FOCUS
+   visible focus ring for keyboard users only
+   (mouse clicks stay clean via :focus-visible)
+========================= */
+a:focus-visible,
+button:focus-visible,
+.nb-cta:focus-visible,
+.nb-mob-btn:focus-visible,
+.nb-links a:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+    outline:2px solid #ff8a2a;
+    outline-offset:3px;
+    border-radius:8px;
+}
+/* pill-shaped nav links get a matching round ring */
+.nb-links a:focus-visible{
+    outline-offset:2px;
+    border-radius:20px;
+}
+
+/* =========================
+   A11Y — REDUCED MOTION
+   honor the OS "reduce motion" setting:
+   kill the 15+ infinite ambient loops, keep
+   instant state changes for usability.
+========================= */
+@media (prefers-reduced-motion: reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+        scroll-behavior:auto !important;
+    }
 }
