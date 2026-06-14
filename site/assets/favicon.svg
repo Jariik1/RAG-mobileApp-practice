@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="kvyik">
-  <rect width="64" height="64" rx="15" fill="#1a120c"/>
-  <!-- narrow square brackets, single solid color -->
-  <g fill="none" stroke="#ff7a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 16 H11 V48 H18"/>
-    <path d="M46 16 H53 V48 H46"/>
-  </g>
-  <!-- three dots inside, with breathing room from the brackets -->
-  <g fill="#ff7a1a">
-    <circle cx="24" cy="32" r="3.1"/>
-    <circle cx="32" cy="32" r="3.1"/>
-    <circle cx="40" cy="32" r="3.1"/>
-  </g>
+  <defs>
+    <linearGradient id="ik-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9a3c"/>
+      <stop offset=".55" stop-color="#ff6a14"/>
+      <stop offset="1" stop-color="#e8530a"/>
+    </linearGradient>
+  </defs>
+  <!-- rounded orange tile -->
+  <rect width="64" height="64" rx="15" fill="url(#ik-bg)"/>
+  <!-- dark monospace [ɪk] mark (centre glyph from the icon sheet) -->
+  <text x="32" y="34" text-anchor="middle" dominant-baseline="central"
+        font-family="'JetBrains Mono','SFMono-Regular',Menlo,Consolas,'DejaVu Sans Mono',monospace"
+        font-size="23" font-weight="700" letter-spacing="-1" fill="#2a1405">[ɪk]</text>
 </svg>
