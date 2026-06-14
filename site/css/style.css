@@ -2313,10 +2313,13 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
     content:"";
     position:absolute;
     inset:0;
+    /* fade the hero's bottom edge into the chocolate body so the
+       rounded card melts into the unified sunrise (no dark seam) */
     background:
-        radial-gradient(ellipse at bottom,
-            rgba(10,10,10,.4),
-            transparent 50%);
+        radial-gradient(ellipse 120% 70% at 50% 118%,
+            rgba(27,17,11,.6),
+            transparent 55%);
+    border-radius:inherit;
     pointer-events:none;
 }
 .nb-page-hero-inner{
@@ -2435,20 +2438,9 @@ footer{padding:40px 0;text-align:center;border-top:1px solid rgba(255,255,255,.0
     padding:100px 60px;
     overflow:hidden;
 }
-/* slow drifting orange bloom — soft "sun" glow */
-.nb-sec::after{
-    content:"";
-    position:absolute;
-    width:760px;height:760px;
-    right:-180px;bottom:-260px;
-    background:radial-gradient(circle,
-        rgba(255,122,26,.30) 0%,
-        rgba(255,90,20,.12) 38%,
-        transparent 68%);
-    filter:blur(40px);
-    pointer-events:none;
-    z-index:0;
-}
+/* per-section blooms removed — content floats on the single unified
+   body sunrise, identical to the home page (no localized patches) */
+.nb-sec::after{display:none;}
 .nb-sec > *{position:relative;z-index:1;}
 @keyframes nbSecGlow{
     0%,100%{transform:translate(0,0) scale(1);opacity:.9;}
@@ -3610,7 +3602,8 @@ body.kvyyk-body{
 
 /* subpage bright hero blends smoothly into the sunrise at its bottom */
 .nb-page-hero::after{
-    background:radial-gradient(ellipse at 50% 120%, rgba(10,7,3,.4), transparent 60%);
+    background:radial-gradient(ellipse 120% 70% at 50% 118%,
+        rgba(27,17,11,.6), transparent 55%);
     border-radius:inherit;
     z-index:0;
 }
