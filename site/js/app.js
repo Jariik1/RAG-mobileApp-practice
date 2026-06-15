@@ -553,6 +553,71 @@ document.querySelectorAll(".nb-carousel").forEach(function(car){
 });
 
 /* =========================
+   NEWS SLIDER (#Using) — one slide at a time
+========================= */
+document.querySelectorAll("[data-news-slider]").forEach(function(root){
+    const track = root.querySelector(".nw-track");
+    const slides = Array.prototype.slice.call(root.querySelectorAll(".nw-slide"));
+    if(!track || slides.length === 0) return;
+
+    const dotsWrap = root.querySelector(".nw-dots");
+    const prev = root.querySelector(".nw-prev");
+    const next = root.querySelector(".nw-next");
+    let idx = 0;
+
+    // build dots
+    const dots = slides.map(function(_, i){
+        const d = document.createElement("button");
+        d.type = "button";
+        d.className = "nw-dot" + (i === 0 ? " is-active" : "");
+        d.setAttribute("aria-label", "Новость " + (i + 1));
+        d.addEventListener("click", function(){ go(i); });
+        if(dotsWrap) dotsWrap.appendChild(d);
+        return d;
+    });
+
+    function go(i){
+        idx = (i + slides.length) % slides.length;
+        track.style.transform = "translateX(" + (-idx * 100) + "%)";
+        dots.forEach(function(d, k){ d.classList.toggle("is-active", k === idx); });
+    }
+
+    if(prev) prev.addEventListener("click", function(){ go(idx - 1); stop(); });
+    if(next) next.addEventListener("click", function(){ go(idx + 1); stop(); });
+
+    // drag / swipe
+    let down = false, startX = 0, moved = 0;
+    track.addEventListener("pointerdown", function(e){
+        down = true; startX = e.clientX; moved = 0;
+        track.style.transition = "none";
+    });
+    window.addEventListener("pointermove", function(e){
+        if(!down) return;
+        moved = e.clientX - startX;
+        const pct = (moved / root.offsetWidth) * 100;
+        track.style.transform = "translateX(" + (-idx * 100 + pct) + "%)";
+    });
+    window.addEventListener("pointerup", function(){
+        if(!down) return;
+        down = false;
+        track.style.transition = "";
+        if(Math.abs(moved) > root.offsetWidth * 0.12){
+            go(moved < 0 ? idx + 1 : idx - 1);
+        }else{ go(idx); }
+        if(moved !== 0) stop();
+    });
+
+    // autoplay (paused on hover / after interaction / reduced motion)
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let timer = null;
+    function play(){ if(reduce) return; stop(); timer = setInterval(function(){ go(idx + 1); }, 6500); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+    root.addEventListener("mouseenter", stop);
+    root.addEventListener("mouseleave", play);
+    play();
+});
+
+/* =========================
    JOURNAL TIMELINE — sequential draw
 ========================= */
 (function(){
