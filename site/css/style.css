@@ -4586,6 +4586,64 @@ select:focus-visible{
     .nb-core-glow{width:170vw;height:1000px;}
 }
 
+@media(max-width:1000px){
+    .home .nb-hero-grid{
+        display:block;
+        width:100%;
+        max-width:100%;
+        overflow:hidden;
+    }
+    .home .nb-headline{
+        width:100%;
+        max-width:100%;
+        font-size:clamp(40px, 11vw, 54px);
+        line-height:1.04;
+        letter-spacing:0;
+        overflow-wrap:anywhere;
+        word-break:normal;
+    }
+    .home .nb-ghost{
+        max-width:100%;
+        overflow-wrap:anywhere;
+    }
+    .home .nb-sub,
+    .home .nb-dict{
+        grid-column:auto;
+        width:100%;
+        max-width:min(100%, 360px);
+        margin-left:0;
+        margin-right:0;
+    }
+    .home .nb-dict{
+        margin-top:22px;
+    }
+    .home .nb-bg-brand{
+        width:100%;
+        max-width:100%;
+        text-align:center;
+        font-size:clamp(78px, 23vw, 100px);
+        letter-spacing:-3px;
+        overflow:hidden;
+    }
+}
+@media(max-width:760px){
+    .home .nb-core-glow{
+        width:280vw;
+        height:1200px;
+    }
+    .home .nb-cta{
+        overflow:hidden;
+    }
+    .home .nb-cta h2{
+        max-width:100%;
+        overflow-wrap:break-word;
+        letter-spacing:0;
+    }
+    .home .nb-cta-lead{
+        max-width:100%;
+    }
+}
+
 /* frosted-glass bottom edge: the KPI+TECH section dissolves smoothly
    into the gradient-core background below it (no hard edge).
    extra bottom padding keeps the glass in the gap below the cards,
