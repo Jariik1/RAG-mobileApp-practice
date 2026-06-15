@@ -9,3 +9,10 @@ PROJECT_MEMORY.md
 # local tooling
 .claude/
 skills/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
