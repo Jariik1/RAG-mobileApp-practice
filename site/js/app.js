@@ -560,7 +560,26 @@ document.querySelectorAll(".section--runline").forEach(function(sec){
     const track = sec.querySelector(".nw-runline-track");
     const group = sec.querySelector(".nw-runline-group");
     if(!track || !group) return;
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const words = Array.prototype.slice.call(sec.querySelectorAll(".nw-run-txt"));
+
+    // fill each word white as it nears the centre of the screen (empty -> white)
+    function paintWords(){
+        const cx = window.innerWidth / 2;
+        const range = window.innerWidth * 0.30;
+        words.forEach(function(w){
+            const r = w.getBoundingClientRect();
+            let t = 1 - Math.abs((r.left + r.width / 2) - cx) / range;
+            t = t < 0 ? 0 : (t > 1 ? 1 : t);
+            t = t * t * (3 - 2 * t);                 // smoothstep
+            w.style.color = "rgba(255,255,255," + t + ")";
+            w.style.webkitTextStrokeColor = "rgba(243,231,216," + (0.5 * (1 - t)) + ")";
+        });
+    }
+
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+        paintWords();   // static fill, no marquee
+        return;
+    }
 
     const NORMAL = 58, SLOW = 12;          // px per second
     let target = NORMAL, speed = NORMAL;
@@ -584,6 +603,7 @@ document.querySelectorAll(".section--runline").forEach(function(sec){
         x -= speed * dt;
         if(groupW > 0){ while(x <= -groupW){ x += groupW; } }
         track.style.transform = "translateX(" + x + "px)";
+        paintWords();
         requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
