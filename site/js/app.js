@@ -273,7 +273,7 @@ const revealElements =
         ".nb-marq-lead, .nb-marq, .nb-showcase-head, .nb-cta h2, .nb-cta-row, .nb-foot, " +
         ".nb-quad-intro, .nb-quad-cell, .nb-quad-stat, .nb-check-col, " +
         ".nb-arch-arrow, .nb-back-btn, .nb-sc-stat-card, " +
-        ".section--runline, .nw-slider"
+        ".section--runline, .nw-slider, .nb-carousel"
     );
 
 revealElements.forEach(el => {
