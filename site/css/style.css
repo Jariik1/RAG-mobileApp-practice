@@ -4596,15 +4596,18 @@ select:focus-visible{
     .home .nb-headline{
         width:100%;
         max-width:100%;
-        font-size:clamp(40px, 11vw, 54px);
+        font-size:clamp(31px, 8.5vw, 40px);
         line-height:1.04;
         letter-spacing:0;
-        overflow-wrap:anywhere;
+        overflow-wrap:normal;
         word-break:normal;
+        hyphens:none;
     }
     .home .nb-ghost{
         max-width:100%;
-        overflow-wrap:anywhere;
+        overflow-wrap:normal;
+        word-break:normal;
+        hyphens:none;
     }
     .home .nb-sub,
     .home .nb-dict{
@@ -4624,6 +4627,7 @@ select:focus-visible{
         font-size:clamp(78px, 23vw, 100px);
         letter-spacing:-3px;
         overflow:hidden;
+        white-space:nowrap;
     }
 }
 @media(max-width:760px){
