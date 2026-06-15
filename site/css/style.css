@@ -2023,16 +2023,11 @@ body{
    CTA
 ========================= */
 .nb-cta{
-    background:
-        radial-gradient(ellipse at center,
-            #ff5400 0%,
-            #ff7a1a 35%,
-            #f9a04a 75%,
-            #0a0a0a 100%
-        );
+    /* glow now comes from the shared .nb-core behind the zone */
+    background:transparent;
     padding:140px 60px;
     text-align:center;
-    color:#1a0a00;
+    color:#fff;
 }
 .nb-cta h2{
     font-family:'Manrope',sans-serif;
@@ -4357,4 +4352,40 @@ select:focus-visible{
     .nw-num{font-size:64px;}
     .nw-col--text{padding:34px 26px;}
     .nw-run-txt{padding:0 22px;}
+}
+
+/* =========================
+   GRADIENT CORE — home bottom (marquee → CTA → footer)
+   one breathing radial "sun" behind the zone, with subtle parallax.
+========================= */
+.nb-core-zone{position:relative;}
+.nb-core-zone > section,
+.nb-core-zone > footer{position:relative;z-index:1;}
+.nb-core{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;will-change:transform;}
+.nb-core-glow{
+    position:absolute;
+    left:50%;
+    top:50%;                       /* sits behind the CTA, spills up & down */
+    width:170vw;
+    height:1600px;
+    transform:translate(-50%,-50%);
+    background:
+        radial-gradient(ellipse 30% 34% at 50% 50%,
+            rgba(255,185,90,.85) 0%,
+            rgba(255,140,50,.55) 38%,
+            transparent 66%),
+        radial-gradient(ellipse 50% 56% at 50% 50%,
+            rgba(255,110,30,.6) 0%,
+            rgba(255,84,20,.3) 40%,
+            rgba(255,70,15,.10) 62%,
+            transparent 76%);
+    will-change:transform,opacity;
+    animation:nbCoreBreath 9s ease-in-out infinite;
+}
+@keyframes nbCoreBreath{
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.82;}
+    50%{transform:translate(-50%,-50%) scale(1.1);opacity:1;}
+}
+@media(max-width:760px){
+    .nb-core-glow{width:200vw;height:1200px;}
 }

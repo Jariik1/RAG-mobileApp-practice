@@ -712,6 +712,32 @@ document.querySelectorAll("[data-news-slider]").forEach(function(root){
 });
 
 /* =========================
+   GRADIENT CORE — subtle scroll parallax
+========================= */
+(function(){
+    const zone = document.querySelector(".nb-core-zone");
+    if(!zone) return;
+    const core = zone.querySelector(".nb-core");
+    if(!core) return;
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let ticking = false;
+    function update(){
+        const r = zone.getBoundingClientRect();
+        // grows as the zone scrolls up through the viewport
+        const enter = window.innerHeight - r.top;
+        const shift = Math.max(-120, Math.min(120, enter * 0.05));   // subtle, clamped
+        core.style.transform = "translateY(" + (-shift) + "px)";
+        ticking = false;
+    }
+    window.addEventListener("scroll", function(){
+        if(!ticking){ requestAnimationFrame(update); ticking = true; }
+    }, {passive:true});
+    window.addEventListener("resize", update);
+    update();
+})();
+
+/* =========================
    JOURNAL TIMELINE — sequential draw
 ========================= */
 (function(){
