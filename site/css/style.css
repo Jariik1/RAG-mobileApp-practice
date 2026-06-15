@@ -4388,7 +4388,7 @@ select:focus-visible{
     --cta-shield-opacity:0;
     --cta-shift:0px;
     position:relative;
-    background:#050505;
+    background:transparent;
     isolation:isolate;
 }
 @media(min-width:1001px){
