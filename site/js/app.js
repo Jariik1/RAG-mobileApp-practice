@@ -395,7 +395,7 @@ if(scScreens.length){
     let lastY = window.scrollY || 0;
     let direction = 1;
     let progress = 0;
-    let ctaWasSnapped = false;
+    let snapState = null;
 
     const clamp = (value, min, max) =>
         Math.max(min, Math.min(max, value));
@@ -403,11 +403,22 @@ if(scScreens.length){
     const smooth = (value) =>
         value * value * (3 - 2 * value);
 
+    function ctaLayoutTop(){
+        const rect =
+            cta.getBoundingClientRect();
+        const ctaShift =
+            parseFloat(
+                stage.style.getPropertyValue("--cta-shift")
+            ) || 0;
+
+        return rect.top - ctaShift;
+    }
+
     function setStageVars(p){
         const kpiDissolve =
-            smooth(clamp((p - 0.82) / 0.12, 0, 1));
+            smooth(clamp((p - 0.84) / 0.14, 0, 1));
         const ctaReveal =
-            smooth(clamp((p - 0.94) / 0.06, 0, 1));
+            smooth(clamp((p - 0.90) / 0.10, 0, 1));
 
         stage.style.setProperty(
             "--kpi-blur",
@@ -435,7 +446,11 @@ if(scScreens.length){
         );
         stage.style.setProperty(
             "--cta-shift",
-            "0px"
+            ((1 - ctaReveal) * 34).toFixed(2) + "px"
+        );
+        stage.style.setProperty(
+            "--cta-blur",
+            ((1 - ctaReveal) * 10).toFixed(2) + "px"
         );
     }
 
@@ -447,6 +462,7 @@ if(scScreens.length){
         stage.style.removeProperty("--cta-core-opacity");
         stage.style.removeProperty("--cta-shield-opacity");
         stage.style.removeProperty("--cta-shift");
+        stage.style.removeProperty("--cta-blur");
     }
 
     function update(){
@@ -464,18 +480,20 @@ if(scScreens.length){
             currentY >= lastY ? 1 : -1;
         lastY = currentY;
 
-        const rect =
-            cta.getBoundingClientRect();
+        const ctaTop =
+            ctaLayoutTop();
         progress =
             clamp(
-                (window.innerHeight - rect.top) /
+                (window.innerHeight - ctaTop) /
                 window.innerHeight,
                 0,
                 1
             );
 
-        if(rect.top > window.innerHeight * 0.9){
-            ctaWasSnapped = false;
+        if(progress < 0.62){
+            snapState = null;
+        }else if(progress > 0.995){
+            snapState = "cta";
         }
 
         setStageVars(progress);
@@ -488,47 +506,39 @@ if(scScreens.length){
         }
     }
 
-    function maybeSnap(){
-        if(
-            !desktopMq.matches ||
-            reduceMq.matches ||
-            snapping ||
-            direction < 0 ||
-            ctaWasSnapped ||
-            progress < 0.76
-        ){
-            return;
-        }
-
-        const rect =
-            cta.getBoundingClientRect();
-        if(
-            rect.top < -window.innerHeight * 0.65 ||
-            rect.top > window.innerHeight * 0.24
-        ){
-            return;
-        }
-
+    function snapToProgress(targetProgress, state){
+        const ctaTop =
+            ctaLayoutTop();
+        const targetTop =
+            window.innerHeight * (1 - targetProgress);
         const target =
             window.scrollY +
-            rect.top;
+            ctaTop -
+            targetTop;
 
         if(Math.abs(window.scrollY - target) < 12){
-            ctaWasSnapped = true;
+            snapState = state;
             return;
         }
 
         snapping = true;
-        ctaWasSnapped = true;
+        snapState = state;
         window.scrollTo({
             top:target,
             behavior:"smooth"
         });
 
         setTimeout(() => {
+            const settleRect =
+                cta.getBoundingClientRect();
+            const ctaShift =
+                parseFloat(
+                    stage.style.getPropertyValue("--cta-shift")
+                ) || 0;
             const settle =
-                cta.getBoundingClientRect().top;
-            if(Math.abs(settle) > 4 && Math.abs(settle) < 80){
+                (settleRect.top - ctaShift) -
+                window.innerHeight * (1 - targetProgress);
+            if(Math.abs(settle) > 4 && Math.abs(settle) < 90){
                 window.scrollTo({
                     top:window.scrollY + settle,
                     behavior:"auto"
@@ -536,7 +546,45 @@ if(scScreens.length){
             }
             snapping = false;
             requestUpdate();
-        }, 900);
+        }, 820);
+    }
+
+    function maybeSnap(){
+        if(
+            !desktopMq.matches ||
+            reduceMq.matches ||
+            snapping
+        ){
+            return;
+        }
+
+        const ctaTop =
+            ctaLayoutTop();
+
+        if(direction > 0){
+            if(
+                snapState === "cta" ||
+                progress < 0.82 ||
+                ctaTop < -window.innerHeight * 0.45 ||
+                ctaTop > window.innerHeight * 0.22
+            ){
+                return;
+            }
+            snapToProgress(1, "cta");
+            return;
+        }
+
+        if(
+            (direction < 0 || snapState === "cta") &&
+            snapState !== "kpi" &&
+            progress > 0.78 &&
+            progress < 0.98 &&
+            ctaTop > window.innerHeight * 0.02 &&
+            ctaTop < window.innerHeight * 0.28
+        ){
+            snapToProgress(0.76, "kpi");
+            return;
+        }
     }
 
     function onScroll(){

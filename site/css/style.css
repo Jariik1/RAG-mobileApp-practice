@@ -4479,6 +4479,7 @@ select:focus-visible{
     --cta-core-opacity:1;
     --cta-shield-opacity:0;
     --cta-shift:0px;
+    --cta-blur:0px;
     position:relative;
     background:transparent;
     isolation:isolate;
@@ -4488,7 +4489,8 @@ select:focus-visible{
         --cta-opacity:0;
         --cta-core-opacity:0;
         --cta-shield-opacity:0;
-        --cta-shift:0px;
+        --cta-shift:34px;
+        --cta-blur:10px;
     }
     .nb-cta-scroll-stage .nb-glass-foot{
         min-height:100vh;
@@ -4522,8 +4524,10 @@ select:focus-visible{
         align-items:center;
         justify-content:center;
         transform:translateY(var(--cta-shift));
+        filter:blur(var(--cta-blur));
         opacity:var(--cta-opacity);
-        will-change:transform,opacity;
+        will-change:transform,filter,opacity;
+        transition:filter .12s linear, opacity .12s linear;
     }
 }
 @media(max-width:1000px){
@@ -4535,6 +4539,7 @@ select:focus-visible{
         --cta-core-opacity:1;
         --cta-shield-opacity:0;
         --cta-shift:0px;
+        --cta-blur:0px;
     }
 }
 
