@@ -553,6 +553,42 @@ document.querySelectorAll(".nb-carousel").forEach(function(car){
 });
 
 /* =========================
+   RUNLINE — JS marquee (smooth speed easing, position never resets)
+========================= */
+document.querySelectorAll(".section--runline").forEach(function(sec){
+    const track = sec.querySelector(".nw-runline-track");
+    const group = sec.querySelector(".nw-runline-group");
+    if(!track || !group) return;
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const NORMAL = 58, SLOW = 12;          // px per second
+    let target = NORMAL, speed = NORMAL;
+    let x = 0;
+    let groupW = group.offsetWidth;
+    let last = performance.now();
+
+    const remeasure = function(){ groupW = group.offsetWidth; };
+    window.addEventListener("resize", remeasure);
+    window.addEventListener("load", remeasure);
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(remeasure); }
+
+    sec.addEventListener("mouseenter", function(){ target = SLOW; });
+    sec.addEventListener("mouseleave", function(){ target = NORMAL; });
+
+    function frame(now){
+        const dt = Math.min((now - last) / 1000, 0.05);
+        last = now;
+        // ease speed toward target — no jump, current position is kept
+        speed += (target - speed) * Math.min(dt * 5, 1);
+        x -= speed * dt;
+        if(groupW > 0){ while(x <= -groupW){ x += groupW; } }
+        track.style.transform = "translateX(" + x + "px)";
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+});
+
+/* =========================
    NEWS SLIDER (#Using) — one slide at a time
 ========================= */
 document.querySelectorAll("[data-news-slider]").forEach(function(root){

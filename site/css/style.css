@@ -4154,12 +4154,12 @@ select:focus-visible{
     background:transparent;
 }
 .nw-runline{display:flex;width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);}
-.nw-runline-track{display:flex;flex:0 0 auto;width:max-content;animation:nwRun 26s linear infinite;}
-/* hover anywhere on the line eases it down instead of a hard pause */
-.section--runline:hover .nw-runline-track{animation-duration:72s;}
+/* speed is driven in JS (smooth easing, no position reset) */
+.nw-runline-track{display:flex;flex:0 0 auto;width:max-content;will-change:transform;}
 .nw-runline-group{display:flex;align-items:center;flex:0 0 auto;}
 .nw-run-txt{
     flex:0 0 auto;
+    display:inline-block;
     padding:0 36px;
     font-family:'Manrope',sans-serif;
     font-weight:800;
@@ -4169,21 +4169,15 @@ select:focus-visible{
     letter-spacing:-.5px;
     color:#f3e7d8;
     cursor:default;
-    transition:color .35s ease, text-shadow .35s ease, -webkit-text-stroke-color .35s ease;
+    transform-origin:center;
+    will-change:transform;
+    transition:transform .4s cubic-bezier(.2,.8,.2,1);
 }
-/* soft glow on the word under the cursor */
-.nw-run-txt:hover{
-    color:#ff8a2a;
-    text-shadow:0 0 28px rgba(255,138,42,.8),0 0 8px rgba(255,138,42,.5);
-}
+/* the word under the cursor scales up smoothly (no box glow) */
+.nw-run-txt:hover{transform:scale(1.2);}
 .nw-run-txt.is-outline{
     color:transparent;
     -webkit-text-stroke:1.4px rgba(255,138,42,.7);
-}
-.nw-run-txt.is-outline:hover{
-    color:#ff8a2a;
-    -webkit-text-stroke-color:transparent;
-    text-shadow:0 0 28px rgba(255,138,42,.7),0 0 8px rgba(255,138,42,.45);
 }
 .nw-run-star{
     flex:0 0 auto;
@@ -4192,8 +4186,6 @@ select:focus-visible{
     line-height:1;
     filter:drop-shadow(0 0 10px rgba(255,122,26,.6));
 }
-@keyframes nwRun{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-
 /* ---- news slider (#Using) ---- */
 #Using.nb-sec{padding-top:32px;}
 #Using .nw-slider{position:relative;}
@@ -4292,6 +4284,7 @@ select:focus-visible{
     margin-top:34px;
 }
 .nw-prev,.nw-next{
+    position:relative;
     width:54px;height:54px;
     border-radius:50%;
     cursor:pointer;
@@ -4300,14 +4293,28 @@ select:focus-visible{
     background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
     border:1px solid rgba(255,255,255,.18);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
-    transition:.25s;
+    isolation:isolate;
+    will-change:transform;
+    transition:transform .4s cubic-bezier(.2,.8,.2,1),
+               box-shadow .4s cubic-bezier(.2,.8,.2,1),
+               background .3s, color .3s, border-color .3s;
+}
+/* warm halo that blooms on hover — same language as the CTA buttons */
+.nw-prev::before,.nw-next::before{
+    content:"";
+    position:absolute;inset:-3px;border-radius:inherit;
+    background:radial-gradient(circle at 50% 100%,rgba(255,122,26,.6),transparent 70%);
+    opacity:0;filter:blur(12px);z-index:-1;pointer-events:none;
+    transition:opacity .4s ease;
 }
 .nw-prev:hover,.nw-next:hover{
     background:linear-gradient(150deg,#ff8a2a,#ff5400);
     color:#1a0a00;border-color:transparent;
-    transform:translateY(-2px);
-    box-shadow:0 10px 26px rgba(255,90,20,.4);
+    transform:translateY(-5px) scale(1.08);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 20px 44px rgba(255,90,20,.45);
 }
+.nw-prev:hover::before,.nw-next:hover::before{opacity:1;}
+.nw-prev:active,.nw-next:active{transform:translateY(-2px) scale(1.03);transition-duration:.15s;}
 .nw-dots{display:flex;align-items:center;gap:10px;}
 .nw-dot{
     width:9px;height:9px;border-radius:50%;cursor:pointer;
