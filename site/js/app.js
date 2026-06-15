@@ -273,7 +273,7 @@ const revealElements =
         ".nb-marq-lead, .nb-marq, .nb-showcase-head, .nb-cta h2, .nb-cta-row, .nb-foot, " +
         ".nb-quad-intro, .nb-quad-cell, .nb-quad-stat, .nb-check-col, " +
         ".nb-arch-arrow, .nb-back-btn, .nb-sc-stat-card, " +
-        ".section--runline, .nw-slider"
+        ".section--runline, .nw-slider, .nb-carousel"
     );
 
 revealElements.forEach(el => {
@@ -710,6 +710,44 @@ document.querySelectorAll("[data-news-slider]").forEach(function(root){
     root.addEventListener("mouseleave", play);
     play();
 });
+
+/* =========================
+   GRADIENT CORE — subtle scroll parallax
+========================= */
+(function(){
+    const zone = document.querySelector(".nb-core-zone");
+    if(!zone) return;
+    const core = zone.querySelector(".nb-core");
+    if(!core) return;
+
+    // hover the primary CTA ("Подробнее") -> the core ignites brighter & grows
+    const lit = zone.querySelector(".nb-core-scale");
+    const ctaBtn = zone.querySelector(".nb-cta .nb-cta-btn.primary");
+    if(lit && ctaBtn){
+        ctaBtn.addEventListener("mouseenter", function(){ lit.classList.add("is-lit"); });
+        ctaBtn.addEventListener("mouseleave", function(){ lit.classList.remove("is-lit"); });
+    }
+
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const RANGE = 150;             // px the core drifts across the whole zone
+    let ticking = false;
+    function update(){
+        const r = zone.getBoundingClientRect();
+        const zoneCenter = r.top + r.height / 2;
+        const viewCenter = window.innerHeight / 2;
+        // p: -1 (zone below viewport) .. +1 (zone above) — continuous through the zone
+        let p = (viewCenter - zoneCenter) / ((window.innerHeight + r.height) / 2);
+        p = Math.max(-1, Math.min(1, p));
+        core.style.transform = "translateY(" + (p * RANGE) + "px)";
+        ticking = false;
+    }
+    window.addEventListener("scroll", function(){
+        if(!ticking){ requestAnimationFrame(update); ticking = true; }
+    }, {passive:true});
+    window.addEventListener("resize", update);
+    update();
+})();
 
 /* =========================
    JOURNAL TIMELINE — sequential draw
