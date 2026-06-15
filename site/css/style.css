@@ -2023,9 +2023,11 @@ body{
    CTA
 ========================= */
 .nb-cta{
-    /* glow now comes from the shared .nb-core behind the zone */
+    /* glow now comes from the shared .nb-core behind the zone;
+       extra top padding gives the core room so it isn't clipped by
+       the section above */
     background:transparent;
-    padding:140px 60px;
+    padding:260px 60px 150px;
     text-align:center;
     color:#fff;
 }
@@ -4382,12 +4384,24 @@ select:focus-visible{
 .nb-core-zone > section,
 .nb-core-zone > footer{position:relative;z-index:1;}
 .nb-core{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;will-change:transform;}
+/* separate layer for the hover "ignite" so it never fights the parallax
+   (on .nb-core) or the breathing (on .nb-core-glow) */
+.nb-core-scale{
+    position:absolute;inset:0;
+    transform-origin:50% 30%;
+    transition:transform .8s cubic-bezier(.2,.8,.2,1), filter .8s ease;
+    will-change:transform,filter;
+}
+.nb-core-scale.is-lit{
+    transform:scale(1.12);
+    filter:brightness(1.45) saturate(1.12);
+}
 .nb-core-glow{
     position:absolute;
     left:50%;
-    top:35%;                       /* centred right behind the CTA block */
-    width:155vw;
-    height:1550px;
+    top:30%;                       /* centred right behind the CTA block */
+    width:185vw;
+    height:1850px;
     transform:translate(-50%,-50%);
     /* tighter, brighter core + steeper falloff = a defined sun, not a soft wash */
     background:

@@ -719,6 +719,15 @@ document.querySelectorAll("[data-news-slider]").forEach(function(root){
     if(!zone) return;
     const core = zone.querySelector(".nb-core");
     if(!core) return;
+
+    // hover the primary CTA ("Подробнее") -> the core ignites brighter & grows
+    const lit = zone.querySelector(".nb-core-scale");
+    const ctaBtn = zone.querySelector(".nb-cta .nb-cta-btn.primary");
+    if(lit && ctaBtn){
+        ctaBtn.addEventListener("mouseenter", function(){ lit.classList.add("is-lit"); });
+        ctaBtn.addEventListener("mouseleave", function(){ lit.classList.remove("is-lit"); });
+    }
+
     if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const RANGE = 150;             // px the core drifts across the whole zone
