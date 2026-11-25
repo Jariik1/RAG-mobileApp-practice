@@ -9,3 +9,15 @@ PROJECT_MEMORY.md
 # local tooling
 .claude/
 skills/
+
+# Android build tooling and generated files
+.android-sdk/
+.android-commandlinetools.zip
+gradle-*-bin.zip
+gradle-*/
+.wrapper-bootstrap/
+.test-avd/
+.gradle/
+android-demo/.gradle/
+android-demo/local.properties
+android-demo/**/build/
