@@ -20,6 +20,8 @@
 
 Сайт по проекту: https://kvyyk-moblie.kvyyk.workers.dev/
 
+Android-демо интерфейса: [`android-demo/`](android-demo/README.md)
+
 Куратор: Суровец Владимир Александрович
 
 
